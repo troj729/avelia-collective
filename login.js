@@ -1,0 +1,1 @@
+go.onclick=()=>{const u=S.g('users',[]).find(x=>x.email==e.value&&x.pw==p.value);if(!u)return toast('Wrong email or password');S.s('me',{name:u.name,email:u.email});location.href=new URLSearchParams(location.search).get('next')||'index.html'}

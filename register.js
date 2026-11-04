@@ -1,0 +1,1 @@
+go.onclick=()=>{const U=S.g('users',[]);if(!n.value||!e.value.includes('@')||p.value.length<6)return toast('Check your details');if(U.find(x=>x.email==e.value))return toast('Email already used');U.push({name:n.value,email:e.value,pw:p.value});S.s('users',U);S.s('me',{name:n.value,email:e.value});location.href='index.html'}

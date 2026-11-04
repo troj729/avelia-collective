@@ -1,0 +1,4 @@
+const P=S.g('pubs',[]),u=me(),mine=u?P.filter(p=>p.by==u.email):[];
+if(u){const e=mine.reduce((s,p)=>s+p.earned,0),n=mine.reduce((s,p)=>s+p.sales,0);er.innerHTML=`<div class=earn><small>Your creator earnings (2% per buyer)</small><div><b>${etb(e)}</b> · ${n} buyers</div><small>Payout unlocks at 5 buyers on a pack (${mine.filter(p=>p.sales>=5).length} eligible)</small></div>`}
+gd.innerHTML=P.map(p=>`<div class=card><small>by ${p.byN}</small><h3>${p.name}</h3><p>${p.items.map(x=>it(x.id).n+(x.q>1?' ×'+x.q:'')).join(' · ')}</p><div class=meta>${p.sales} bought</div><span class=price>${etb(price(p.items))}</span> <button class=btn data-i=${p.id}>Add</button></div>`).join('');
+gd.onclick=e=>{const b=e.target.closest('button');if(!b)return;const p=P.find(x=>x.id==b.dataset.i);addCart({name:p.name,price:price(p.items),pid:p.id})};

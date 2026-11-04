@@ -1,0 +1,1 @@
+.ci{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}.ci button{background:none;border:0;color:var(--red);cursor:pointer}.tot{font-size:2rem;color:var(--org);margin:1.5rem 0}

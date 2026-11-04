@@ -1,0 +1,41 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Avelia Collective · Ethiopian Gift Packages</title><link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel=stylesheet><link rel=stylesheet href=css/base.css><link rel=stylesheet href=css/index.css>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body data-p=index><header id=nav></header><main style="padding:0">
+<section class=seq id=seq><div class=stick><canvas id=gl></canvas>
+<div class=cap id=c1><p class=eye>Avelia Collective · Ethiopia</p><h1>Gifts that arrive like an <i>event.</i></h1><p>Scroll. The box is already falling.</p></div>
+<div class=cap id=c2><p class=eye>Chapter 02</p><h2>Every package opens a <i>story.</i></h2></div>
+<div class=cap id=c3><p class=eye>Chapter 03</p><h2>The catalog, <i>unfolded.</i></h2></div>
+<div id=cat></div></div></section>
+<section class=pk><p class=eye>Choose a mood</p><h2>Find your <i>occasion</i></h2><div class=grid id=pg></div><p style="margin-top:2rem"><a class=btn href=custom.html>Build your own package →</a></p></section></main><footer id=ft></footer>
+<script src=js/shared.js></script>
+<script>pg.innerHTML=Object.entries(PK).map(([k,v])=>`<a class=card style="--a:${v.a}" href="package.html?k=${k}"><h3>${v.n}</h3><p>${v.t}</p><span class=price>from ${etb(price(v.items.map(id=>({id}))))}</span></a>`).join('');cat.innerHTML=ITEMS.slice(0,6).map(i=>`<a class=card href=custom.html><small>${i.c}</small><h3 style="font-size:1rem">${i.n}</h3><span class=price>${etb(i.p)}</span></a>`).join('')</script>
+<script type="module">
+import * as T from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const R=new T.WebGLRenderer({canvas:gl,antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;R.shadowMap.type=T.PCFSoftShadowMap;R.toneMapping=T.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
+const sc=new T.Scene(),cam=new T.PerspectiveCamera(35,1,.1,60);sc.environment=new T.PMREMGenerator(R).fromScene(new RoomEnvironment(),.04).texture;
+const sun=new T.DirectionalLight(0xfff2e0,2.4);sun.position.set(4,9,6);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6});sun.shadow.radius=6;sun.shadow.bias=-.0004;sc.add(sun);
+const p1=new T.PointLight(0x105bff,80,30);p1.position.set(-6,3,-3);const p2=new T.PointLight(0xfe8500,60,30);p2.position.set(6,2,-2);sc.add(p1,p2);
+const gnd=new T.Mesh(new T.PlaneGeometry(40,40),new T.ShadowMaterial({opacity:.5}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;sc.add(gnd);
+const glow=new T.Mesh(new T.CircleGeometry(3.2,64),new T.MeshBasicMaterial({color:0xe5213d,transparent:true,opacity:.16,blending:T.AdditiveBlending,depthWrite:false}));glow.rotation.x=-Math.PI/2;glow.position.y=.01;sc.add(glow);
+const M=(c,o={})=>new T.MeshPhysicalMaterial({color:c,roughness:.4,...o}),red=M(0xe5213d,{roughness:.3,clearcoat:.7,clearcoatRoughness:.2,sheen:1,sheenColor:new T.Color(0xff8a98)}),rib=M(0xf0f0f0,{roughness:.25,sheen:1,sheenColor:new T.Color(0xffffff),clearcoat:.4});
+const rb=(w,h,d,r,m)=>{const x=new T.Mesh(new RoundedBoxGeometry(w,h,d,5,r),m);x.castShadow=x.receiveShadow=true;return x},cy=(r,h,m,y=0)=>{const x=new T.Mesh(new T.CylinderGeometry(r,r,h,40),m);x.position.y=y;x.castShadow=true;return x};
+const G=new T.Group(),box=new T.Group();box.position.y=-.75;G.add(box);sc.add(G);
+const body=rb(2,1.5,2,.04,red);body.position.y=.75;const rv=rb(.34,1.52,2.04,.02,rib),rh=rb(2.04,1.52,.34,.02,rib);rv.position.y=rh.position.y=.75;box.add(body,rv,rh);
+const lid=new T.Group();lid.position.set(0,1.5,-1.08);const lm=rb(2.16,.42,2.16,.05,red);lm.position.set(0,.2,1.08);const lv=rb(.34,.44,2.2,.02,rib),lh=rb(2.2,.44,.34,.02,rib);lv.position.copy(lm.position);lh.position.copy(lm.position);lid.add(lm,lv,lh);
+for(const s of[-1,1]){const l=new T.Mesh(new T.TorusGeometry(.34,.09,20,48),rib);l.scale.set(1,1.35,.6);l.position.set(s*.38,.58,1.08);l.rotation.set(0,0,s*-.9+Math.PI/2*0+0);l.rotation.z=-s*.6;l.castShadow=true;lid.add(l);const t=rb(.12,.7,.03,.01,rib);t.position.set(s*.3,.42,1.9);t.rotation.set(.5,0,s*.4);lid.add(t)}
+const kn=new T.Mesh(new T.SphereGeometry(.14,24,24),rib);kn.position.set(0,.5,1.08);lid.add(kn);box.add(lid);
+const mk=[()=>{const g=new T.Group(),b=rb(.55,.72,.3,.05,M(0x6b3a1f,{roughness:.7}));const l=rb(.56,.14,.31,.02,M(0xf0f0f0));l.position.y=.1;g.add(b,l);return g},()=>{const g=new T.Group();g.add(cy(.17,.7,M(0x3a1a08,{roughness:.1,clearcoat:1})),cy(.07,.4,M(0x3a1a08,{roughness:.1,clearcoat:1}),.5),cy(.075,.1,M(0xfe8500),.72));return g},()=>{const g=new T.Group();g.add(cy(.26,.45,M(0xfe8500,{roughness:.1,transmission:.4,thickness:.5})),cy(.28,.1,M(0x21232e),.27));return g},()=>{const g=new T.Group();g.add(cy(.22,.5,M(0xf0f0f0,{roughness:.6})),cy(.01,.1,M(0x21232e),.3));return g},()=>{const g=new T.Group();for(let i=0;i<3;i++){const s=rb(.7,.14,.5,.05,M(i%2?0xf0f0f0:0x105bff,{roughness:.8,sheen:1}));s.position.y=i*.15-.15;g.add(s)}return g},()=>{const g=new T.Group(),b=rb(.5,.08,.72,.02,M(0x171f44,{roughness:.5}));g.add(b);const s=rb(.5,.09,.05,.01,M(0xfe8500));s.position.x=.22;g.add(s);g.rotation.x=1.2;return g}];
+const IT=mk.map((f,i)=>({o:f(),f:[(i%3-1)*.55,(i<3?-1:1)*.45]}));IT.forEach(x=>G.add(x.o));
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),L=(a,b,t)=>a+(b-a)*t,E=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,sg=(p,a,b)=>cl((p-a)/(b-a));
+function rs(){const w=innerWidth,h=innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}rs();addEventListener('resize',rs);
+let cur=0;const sq=document.getElementById('seq');
+R.setAnimationLoop(t=>{t/=1000;const p=cl(scrollY/(sq.offsetHeight-innerHeight));cur+=(p-cur)*.07;
+const a=E(sg(cur,0,.3)),b=E(sg(cur,.34,.62)),c=E(sg(cur,.68,.95)),w=cam.aspect<1?1.6:1;
+G.position.set(0,L(L(3.4,.75,a),-.15,c),L(0,-1.2,c));G.rotation.set(L(.55,0,a),L(.4,Math.PI*4,a),L(-.35,0,a));
+G.scale.y=1-.05*Math.sin(sg(cur,.28,.38)*Math.PI);lid.rotation.x=-E(cl(b*1.7))*1.95;box.scale.setScalar(L(1,.75,c));
+IT.forEach((x,i)=>{const r=E(cl(b*1.6-.7-i*.1)),sp=c;x.o.position.set(L(x.f[0],(i-2.5)*1.25,sp),L(L(.1,1.75,r),2.7+Math.sin(t*1.5+i)*.1,sp),L(x.f[1],.9,sp));x.o.scale.setScalar(L(.9,1.3,sp));x.o.rotation.y=t*.7+i;x.o.visible=b>.05});
+cam.position.set(0,L(2.6,3.6,b),L(10.5,9,b)*w);cam.lookAt(0,L(.9,1.5,b),0);
+c1.style.opacity=1-sg(cur,.18,.3);c2.style.opacity=sg(cur,.36,.44)*(1-sg(cur,.58,.66));c3.style.opacity=sg(cur,.7,.8);cat.style.opacity=sg(cur,.74,.86);cat.style.pointerEvents=cur>.8?'auto':'none';cat.style.transform=`translateY(${(1-sg(cur,.74,.86))*40}px)`;
+R.render(sc,cam)});
+</script></body></html>
